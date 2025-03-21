@@ -36,9 +36,63 @@ def get_url():
         except Exception as e:
             print('\033[31mAn error occurred:\033[0m', e)
 
-def load_cms_metadata(json_file):
-    with open(json_file, "r") as file:
-        return json.load(file)
+def load_cms_metadata():
+    # تعريف بيانات أنظمة إدارة المحتوى (CMS) مباشرة في الكود
+    cms_metadata = {
+        "WordPress": {
+            "identification": {
+                "indicators": [
+                    "wp-content",
+                    "wp-includes",
+                    "wp-admin"
+                ]
+            },
+            "version_detection": {
+                "indicators": [
+                    "Version (\\d+\\.\\d+\\.\\d+)"
+                ]
+            },
+            "login_pages": [
+                "/wp-login.php",
+                "/wp-admin"
+            ]
+        },
+        "Joomla": {
+            "identification": {
+                "indicators": [
+                    "joomla",
+                    "templates/joomla"
+                ]
+            },
+            "version_detection": {
+                "indicators": [
+                    "Joomla! (\\d+\\.\\d+\\.\\d+)"
+                ]
+            },
+            "login_pages": [
+                "/administrator",
+                "/login"
+            ]
+        },
+        "Drupal": {
+            "identification": {
+                "indicators": [
+                    "drupal",
+                    "sites/all/themes"
+                ]
+            },
+            "version_detection": {
+                "indicators": [
+                    "Drupal (\\d+\\.\\d+\\.\\d+)"
+                ]
+            },
+            "login_pages": [
+                "/user/login",
+                "/user"
+            ]
+        }
+    }
+    return cms_metadata
 
 def detect_cms_and_version(url, cms_metadata):
     response = requests.get(url)
@@ -446,7 +500,7 @@ if __name__ == '__main__':
     start_time = time.time()
     response = requests.get(url)
     get_server_info(response)
-    cms_metadata = load_cms_metadata("src/cms_metadata.json")
+    cms_metadata = load_cms_metadata()
     cms_name = "Unknown CMS"
 
     while True:
