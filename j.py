@@ -16,11 +16,6 @@ def signal_handler(sig, frame):
     time.sleep(1)
     sys.exit(1)
 
-def print_logo():
-    with open("src/logo.txt", "r") as logo_file:
-        logo = logo_file.read()
-        print(logo)
-
 def get_url():
     while True:
         try:
@@ -446,7 +441,6 @@ def print_menu():
     print("\033[31m0.Exit\033[0m")
 
 if __name__ == '__main__':
-    print_logo()
     url = get_url() 
     print("\nFetching URL...")
     start_time = time.time()
